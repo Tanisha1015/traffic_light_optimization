@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ML Traffic Light Dashboard</title>
+</head>
+<body>
+    <h1>Latest Traffic Data</h1>
+    <table border="1" id="traffic-table">
+        <tr>
+            <th>Timestamp</th>
+            <th>Vehicle Count</th>
+            <th>Avg Speed (km/h)</th>
+            <th>Peak Hour?</th>
+            <th>Density</th>
+            <th>Green Time (s)</th>
+        </tr>
+    </table>
+    <script>
+        fetch('/api/traffic').then(r => r.json()).then(data => {
+            let table = document.getElementById('traffic-table');
+            data.forEach(row => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.timestamp}</td>
+                                <td>${row.vehicle_count}</td>
+                                <td>${row.avg_speed.toFixed(2)}</td>
+                                <td>${row.is_peak_hour ? 'Yes' : 'No'}</td>
+                                <td>${row.density ? 'High' : 'Low'}</td>
+                                <td>${row.green_time}</td>`;
+                table.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>
